@@ -1,0 +1,580 @@
+name: "yolov3_tiny"
+
+input: "data"
+input_dim: 1
+input_dim: 3
+input_dim: 360
+input_dim: 640
+
+# 1 (640x360 -> 320x180)
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  convolution_param {
+    num_output: 16
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv1_bn"
+  type: "BatchNorm"
+  bottom: "conv1"
+  top: "conv1"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv1_scale"
+  type: "Scale"
+  bottom: "conv1"
+  top: "conv1"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv1_relu"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+
+# 2 (320x180 -> 160x90)
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2"
+  convolution_param {
+    num_output: 32
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv2_bn"
+  type: "BatchNorm"
+  bottom: "conv2"
+  top: "conv2"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv2_scale"
+  type: "Scale"
+  bottom: "conv2"
+  top: "conv2"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv2_relu"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+
+# 3 (160x90 -> 80x46)
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3"
+  convolution_param {
+    num_output: 64
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv3_bn"
+  type: "BatchNorm"
+  bottom: "conv3"
+  top: "conv3"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv3_scale"
+  type: "Scale"
+  bottom: "conv3"
+  top: "conv3"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv3_relu"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+	pad_w: 0
+	pad_h: 1
+  }
+}
+
+
+# 4 (80x46 -> 40x24)
+layer {
+  name: "conv4"
+  type: "Convolution"
+  bottom: "pool3"
+  top: "conv4"
+  convolution_param {
+    num_output: 128
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv4_bn"
+  type: "BatchNorm"
+  bottom: "conv4"
+  top: "conv4"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv4_scale"
+  type: "Scale"
+  bottom: "conv4"
+  top: "conv4"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv4_relu"
+  type: "ReLU"
+  bottom: "conv4"
+  top: "conv4"
+}
+layer {
+  name: "pool4"
+  type: "Pooling"
+  bottom: "conv4"
+  top: "pool4"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+	pad_w: 0
+	pad_h: 1
+  }
+}
+
+
+# 5 (40x24 -> 20x12)
+layer {
+  name: "conv5"
+  type: "Convolution"
+  bottom: "pool4"
+  top: "conv5"
+  convolution_param {
+    num_output: 256
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv5_bn"
+  type: "BatchNorm"
+  bottom: "conv5"
+  top: "conv5"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv5_scale"
+  type: "Scale"
+  bottom: "conv5"
+  top: "conv5"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv5_relu"
+  type: "ReLU"
+  bottom: "conv5"
+  top: "conv5"
+}
+layer {
+  name: "pool5"
+  type: "Pooling"
+  bottom: "conv5"
+  top: "pool5"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+
+# 6 (20x12 -> 20x12)
+layer {
+  name: "conv6"
+  type: "Convolution"
+  bottom: "pool5"
+  top: "conv6"
+  convolution_param {
+    num_output: 512
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv6_bn"
+  type: "BatchNorm"
+  bottom: "conv6"
+  top: "conv6"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv6_scale"
+  type: "Scale"
+  bottom: "conv6"
+  top: "conv6"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv6_relu"
+  type: "ReLU"
+  bottom: "conv6"
+  top: "conv6"
+}
+layer {
+  name: "pool6"
+  type: "Pooling"
+  bottom: "conv6"
+  top: "pool6"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 1
+    pad: 1
+  }
+}
+
+
+# 7 (20x12 -> 20x12)
+layer {
+  name: "conv7"
+  type: "Convolution"
+  bottom: "pool6"
+  top: "conv7"
+  convolution_param {
+    num_output: 1024
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv7_bn"
+  type: "BatchNorm"
+  bottom: "conv7"
+  top: "conv7"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv7_scale"
+  type: "Scale"
+  bottom: "conv7"
+  top: "conv7"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv7_relu"
+  type: "ReLU"
+  bottom: "conv7"
+  top: "conv7"
+}
+
+
+####################
+
+
+# 8 (20x12 -> 20x12)
+layer {
+  name: "conv8"
+  type: "Convolution"
+  bottom: "conv7"
+  top: "conv8"
+  convolution_param {
+    num_output: 256
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv8_bn"
+  type: "BatchNorm"
+  bottom: "conv8"
+  top: "conv8"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv8_scale"
+  type: "Scale"
+  bottom: "conv8"
+  top: "conv8"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv8_relu"
+  type: "ReLU"
+  bottom: "conv8"
+  top: "conv8"
+}
+
+
+# 9 (20x12 -> 20x12)
+layer {
+  name: "conv9"
+  type: "Convolution"
+  bottom: "conv8"
+  top: "conv9"
+  convolution_param {
+    num_output: 512
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv9_bn"
+  type: "BatchNorm"
+  bottom: "conv9"
+  top: "conv9"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv9_scale"
+  type: "Scale"
+  bottom: "conv9"
+  top: "conv9"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv9_relu"
+  type: "ReLU"
+  bottom: "conv9"
+  top: "conv9"
+}
+
+
+# 10 (20x12 -> 20x12)
+layer {
+  name: "conv10"
+  type: "Convolution"
+  bottom: "conv8"
+  top: "conv10"
+  convolution_param {
+    num_output: 128
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv10_bn"
+  type: "BatchNorm"
+  bottom: "conv10"
+  top: "conv10"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv10_scale"
+  type: "Scale"
+  bottom: "conv10"
+  top: "conv10"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv10_relu"
+  type: "ReLU"
+  bottom: "conv10"
+  top: "conv10"
+}
+
+
+# 11 (upsample 2x, 20x12 -> 40x24)
+layer {
+  name: "upsample"
+  type: "Deconvolution"
+  bottom: "conv10"
+  top: "upsample"
+  convolution_param {
+    num_output: 128
+	group: 128
+    kernel_size: 4
+    stride: 2
+    pad: 1
+	bias_term: false
+  }
+}
+
+
+# 12 (concatenate, 40x24x128 + 40x24x256 -> 40x24x384)
+layer {
+  name: "concat"
+  type: "Concat"
+  bottom: "upsample"
+  bottom: "conv5"
+  top: "concat"
+  concat_param {
+    axis: 1
+  }
+}
+
+
+# 13 (40x24 -> 40x24)
+layer {
+  name: "conv11"
+  type: "Convolution"
+  bottom: "concat"
+  top: "conv11"
+  convolution_param {
+    num_output: 256
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+layer {
+  name: "conv11_bn"
+  type: "BatchNorm"
+  bottom: "conv11"
+  top: "conv11"
+  batch_norm_param {
+    use_global_stats: true
+  }
+}
+layer {
+  name: "conv11_scale"
+  type: "Scale"
+  bottom: "conv11"
+  top: "conv11"
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "conv11_relu"
+  type: "ReLU"
+  bottom: "conv11"
+  top: "conv11"
+}
+
+
+# 14 (detection conv 1, 20x12 -> 20x12)
+layer {
+  name: "det_conv1"
+  type: "Convolution"
+  bottom: "conv9"
+  top: "det_conv1"
+  convolution_param {
+    num_output: 15
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+
+
+# 15 (detection conv 2, 40x24 -> 40x24)
+layer {
+  name: "det_conv2"
+  type: "Convolution"
+  bottom: "conv11"
+  top: "det_conv2"
+  convolution_param {
+    num_output: 15
+    kernel_size: 3
+    stride: 1
+	pad: 1
+  }
+}
+
+
+# detection
+layer {
+  name: "tiny-yolo-det"
+  type: "TinyYolo"
+  bottom: "det_conv1"
+  bottom: "det_conv2"
+  top: "tiny-yolo-det"
+}
