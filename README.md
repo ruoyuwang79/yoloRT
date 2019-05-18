@@ -23,7 +23,7 @@
 			    |- alltime.txt (output fps)
 			|- xml
 			    |- DeepZS (our team name directory, all detection will write as .xml to here)
-			|--- ...*.jpg
+		|--- ...*.jpg
 
 ## Configuration
 
