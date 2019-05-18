@@ -1,7 +1,7 @@
 # YoloRT
-	- An inference network
-	- Edge inference with low power
-	- TensorRT speedup
+  - An inference network
+  - Edge inference with low power
+  - TensorRT speedup
 
 ## Requirement
 	- openCV
